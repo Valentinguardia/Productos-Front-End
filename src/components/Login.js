@@ -40,7 +40,7 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-md shadow-md">
+    <div className="max-w-md mx-auto my-[10%] bg-custom-white p-6 rounded-md shadow-md">
     <h2 className="text-2xl font-semibold text-center">Iniciar Sesión</h2>
     <form onSubmit={handleSubmit} className="mt-4">
       <div className="mb-4">
@@ -75,7 +75,7 @@ const Login = () => {
           <button
             type="button"
             onClick={togglePasswordVisibility}
-            className="absolute right-2 top-2 text-gray-600"
+            className="absolute right-2 top-3 text-gray-600"
           >
             {showPassword ? "Ocultar" : "Mostrar"}
           </button>

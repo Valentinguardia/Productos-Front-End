@@ -1,15 +1,72 @@
-"use client"
-const Brands = ({ brands }) => {
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Navbar from "@/commons/Navbar";
+import { getAllBrands } from "@/services/brandsData";
+
+const Brands = () => {
+  const router = useRouter();
+  const [brands, setBrands] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      const data = await getAllBrands();
+      if (data) {
+        setBrands(data);
+      }
+    };
+
+    fetchBrands();
+  }, []);
+
+  const indexOfLastBrand = currentPage * itemsPerPage;
+  const indexOfFirstBrand = indexOfLastBrand - itemsPerPage;
+  const currentBrands = brands.slice(indexOfFirstBrand, indexOfLastBrand);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleBrandClick = (brandId) => {
+    router.push(`/?brandId=${brandId}`);
+  };
+
   return (
-    <div className="container mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Marcas</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {brands.map((brand) => (
-          <div key={brand.id} className="border p-4 rounded-lg">
-            <img src={brand.logo_url} alt={brand.name} className="h-40 w-full object-cover" />
-            <h2 className="mt-2 text-lg font-semibold">{brand.name}</h2>
+    <div className="mt-[95px] mb-[30px]">
+      <Navbar brands={brands} />
+      <h1 className="text-2xl font-bold mb-[50px] text-center">Marcas</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mx-19 justify-items-center">
+        {currentBrands.map((brand) => (
+          <div
+            key={brand.id}
+            className="cursor-pointer flex flex-col items-center justify-center text-center w-[250px] h-[300px]"
+            onClick={() => handleBrandClick(brand.id)}
+          >
+            <img
+              src={brand.logo_url}
+              alt={brand.name}
+              className="h-40 w-40 object-contain mb-4"
+            />
+            <h2 className="text-lg font-semibold">{brand.name}</h2>
           </div>
         ))}
+      </div>
+      <div className="flex justify-center mt-4">
+        {[...Array(Math.ceil(brands.length / itemsPerPage)).keys()].map(
+          (num) => (
+            <button
+              key={num}
+              className={`mx-2 px-4 py-2 border ${
+                currentPage === num + 1 ? "bg-gray-300" : "bg-white"
+              }`}
+              onClick={() => handlePageChange(num + 1)}
+            >
+              {num + 1}
+            </button>
+          )
+        )}
       </div>
     </div>
   );

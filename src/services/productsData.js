@@ -29,7 +29,6 @@ export const getProductById = async (productId) => {
   }
 };
 export const createProduct = async (productData) => {
-  console.log("SERVICE",productData);
   try {
     const response = await axios.post(`${API_URL}/products/`, productData, {
       withCredentials: true,

@@ -55,7 +55,7 @@ const Navbar = ({ brands }) => {
               >
                 +
               </button>
-              <p className="hover:text-blue-400" onClick={handleLogout}>Logout</p>
+              <p className="cursor-pointer hover:text-blue-400" onClick={handleLogout}>Logout</p>
             </>
           ) : (
             <Link href="/login">
@@ -98,7 +98,7 @@ const Navbar = ({ brands }) => {
               >
                 Agregar +
               </button>
-              <p className="hover:text-blue-400 block w-full text-left mt-2"  onClick={handleLogout}>Logout</p>
+              <p className="hover:text-blue-400 block w-full text-left mt-2" onClick={handleLogout}>Logout</p>
             </>
           ) : (
             <Link href="/login">

@@ -6,6 +6,7 @@ import { createBrand } from "@/services/brandsData";
 const CreateItemModal = ({ onClose, brands }) => {
   const [itemType, setItemType] = useState("Producto");
   const [productName, setProductName] = useState("");
+  const [brandName, setBrandName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -24,23 +25,25 @@ const CreateItemModal = ({ onClose, brands }) => {
     //   logo_url: itemType === "Marca" ? logoUrl : undefined,
     // };
     const newItem = {
-      name: itemType === "Producto" ? productName : selectedBrand?.name, 
+      // name: itemType === "Producto" ? productName : selectedBrand?.name, 
+      name: itemType === "Producto" ? productName : brandName, 
       price: itemType === "Producto" ? price : undefined,
       description: itemType === "Producto" ? description : undefined,
       image_url: itemType === "Producto" ? imageUrl : undefined,
       brandId: itemType === "Producto" ? selectedBrand?.id : undefined, 
       logo_url: itemType === "Marca" ? logoUrl : undefined,
     };
-    
-
-
+  
     try {
       if (itemType === "Producto") {
         await createProduct(newItem);
+        location.reload()
       } else {
         await createBrand(newItem);
+        location.reload()
       }
       setProductName("");
+      setProductName("")
       setPrice("");
       setDescription("");
       setImageUrl("");
@@ -51,7 +54,6 @@ const CreateItemModal = ({ onClose, brands }) => {
       console.error("Error al enviar datos:", error);
     }
   };
-  console.log(selectedBrand);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -130,6 +132,8 @@ const CreateItemModal = ({ onClose, brands }) => {
                 <input
                   type="text"
                   placeholder="Nombre de Marca"
+                  value={brandName}
+                  onChange={(e) => setBrandName(e.target.value)}
                   required
                   className="block w-full mb-4 pl-1"
                 />
