@@ -1,8 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CreateItemModal from "./createItemModal";
 import { logoutUser } from "@/services/userData";
 import { set } from "@/app/state/userState";
@@ -55,11 +54,11 @@ const Navbar = ({ brands }) => {
               >
                 +
               </button>
-              <p className="cursor-pointer hover:text-blue-400" onClick={handleLogout}>Logout</p>
+              <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700" onClick={handleLogout}>Logout</button>
             </>
           ) : (
             <Link href="/login">
-              <p className="hover:text-blue-400">Login</p>
+              <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700">Login</button>
             </Link>
           )}
         </div>
@@ -90,7 +89,7 @@ const Navbar = ({ brands }) => {
           <Link href="/brands">
             <p className="block px-4 py-2 hover:text-blue-400">Marcas</p>
           </Link>
-          {!user.isLoggedIn ? (
+          {user.isLoggedIn ? (
             <>
               <button
                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded block w-full text-left mt-2"
@@ -98,11 +97,11 @@ const Navbar = ({ brands }) => {
               >
                 Agregar +
               </button>
-              <p className="hover:text-blue-400 block w-full text-left mt-2" onClick={handleLogout}>Logout</p>
+              <p className="hover:text-blue-400 block w-full text-left mt-2 ml-4" onClick={handleLogout}>Logout</p>
             </>
           ) : (
             <Link href="/login">
-              <p className="hover:text-blue-400 block w-full text-left mt-2">Login</p>
+              <p className="hover:text-blue-400 block w-full text-left mt-2 ml-4">Login</p>
             </Link>
           )}
         </div>

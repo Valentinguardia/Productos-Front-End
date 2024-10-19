@@ -1,9 +1,8 @@
-// "use client";
 // import { useState, useEffect } from "react";
 // import { useSearchParams } from 'next/navigation'; 
 // import Modal from "@/commons/Modal";
 // import Navbar from "@/commons/Navbar";
-// import { getProductsData } from "@/services/productsData";
+// import { getProductsData, updateProduct, deleteProduct } from "@/services/productsData"; 
 // import { getAllBrands } from "@/services/brandsData";
 
 // const Products = () => {
@@ -44,13 +43,32 @@
 //     }
 //   }, [brandId, products]);
 
-
 //   const indexOfLastProduct = currentPage * itemsPerPage;
 //   const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
 //   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct); 
 
 //   const handlePageChange = (newPage) => {
 //     setCurrentPage(newPage);
+//   };
+
+//   const handleUpdateProduct = async (updatedProduct) => {
+//     try {
+//       await updateProduct(updatedProduct.id, updatedProduct); 
+//       setProducts((prevProducts) =>
+//         prevProducts.map((product) =>
+//           product.id === updatedProduct.id ? updatedProduct : product
+//         )
+//       );
+//       setSelectedProduct(updatedProduct);
+//     } catch (error) {
+//       console.error("Error al actualizar el producto:", error);
+//     }
+//   };
+
+//   const handleDeleteProduct = (productId) => {
+//     setProducts((prevProducts) =>
+//       prevProducts.filter((product) => product.id !== productId)
+//     );
 //   };
 
 //   return (
@@ -85,25 +103,12 @@
 //       </div>
 
 //       {selectedProduct && (
-//         <Modal onClose={() => setSelectedProduct(null)}>
-//           <div className="h-56 w-full bg-gray-200 rounded-lg mb-4 mt-4">
-//             <img
-//               src={selectedProduct.image_url}
-//               className="h-full w-full object-cover rounded-lg"
-//             />
-//           </div>
-//           <p>${selectedProduct.price}</p>
-//           <h2 className="font-semibold">{selectedProduct.name}</h2>
-//           <p>
-//             {selectedProduct.description}{" "}
-//             <span className="font-semibold">
-//               {
-//                 brands.find((brand) => brand.id === selectedProduct.brandId)?.name ||
-//                 "Marca no encontrada"
-//               }
-//             </span>
-//           </p>
-//         </Modal>
+//         <Modal  
+//           product={selectedProduct} 
+//           onUpdate={handleUpdateProduct} 
+//           onDelete={handleDeleteProduct} 
+//           onClose={() => setSelectedProduct(null)} 
+//         />
 //       )}
 
 //       <div className="flex justify-center mt-4">
@@ -127,12 +132,12 @@
 
 // export default Products;
 
-"use client";
+
 import { useState, useEffect } from "react";
 import { useSearchParams } from 'next/navigation'; 
 import Modal from "@/commons/Modal";
 import Navbar from "@/commons/Navbar";
-import { getProductsData, updateProduct } from "@/services/productsData"; // Importamos la función para actualizar el producto
+import { getProductsData, updateProduct, deleteProduct } from "@/services/productsData"; 
 import { getAllBrands } from "@/services/brandsData";
 
 const Products = () => {
@@ -144,8 +149,8 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]); 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
-  const [isEditing, setIsEditing] = useState(false); // Estado para el modo de edición
 
+  // Fetch inicial de productos y marcas
   useEffect(() => {
     const fetchProducts = async () => {
       const data = await getProductsData();
@@ -182,10 +187,6 @@ const Products = () => {
     setCurrentPage(newPage);
   };
 
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing); // Alternar entre el modo de visualización y edición
-  };
-
   const handleUpdateProduct = async (updatedProduct) => {
     try {
       await updateProduct(updatedProduct.id, updatedProduct); 
@@ -194,10 +195,21 @@ const Products = () => {
           product.id === updatedProduct.id ? updatedProduct : product
         )
       );
-      setSelectedProduct(updatedProduct);
-      setIsEditing(false);
+      setSelectedProduct(updatedProduct); 
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
+    }
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await deleteProduct(productId);
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product.id !== productId)
+      );
+      setSelectedProduct(null); 
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
     }
   };
 
@@ -233,88 +245,12 @@ const Products = () => {
       </div>
 
       {selectedProduct && (
-        <Modal  product={selectedProduct} onUpdate={handleUpdateProduct} onClose={() => setSelectedProduct(null)}>
-          {!isEditing ? (
-            <>
-              <div className="h-56 w-full bg-gray-200 rounded-lg mb-4 mt-4">
-                <img
-                  src={selectedProduct.image_url}
-                  className="h-full w-full object-cover rounded-lg"
-                />
-              </div>
-              <p>${selectedProduct.price}</p>
-              <h2 className="font-semibold">{selectedProduct.name}</h2>
-              <p>
-                {selectedProduct.description}{" "}
-                <span className="font-semibold">
-                  {brands.find((brand) => brand.id === selectedProduct.brandId)?.name ||
-                  "Marca no encontrada"}
-                </span>
-              </p>
-              <button
-                onClick={handleEditToggle}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-              >
-                Editar
-              </button>
-            </>
-          ) : (
-            <>
-              <div className="h-56 w-full bg-gray-200 rounded-lg mb-4 mt-4">
-                <input
-                  type="text"
-                  name="image_url"
-                  value={selectedProduct.image_url}
-                  onChange={(e) =>
-                    setSelectedProduct({
-                      ...selectedProduct,
-                      image_url: e.target.value,
-                    })
-                  }
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-              <input
-                type="text"
-                name="price"
-                value={selectedProduct.price}
-                onChange={(e) =>
-                  setSelectedProduct({ ...selectedProduct, price: e.target.value })
-                }
-                className="w-full p-2 border rounded mb-2"
-              />
-              <input
-                type="text"
-                name="name"
-                value={selectedProduct.name}
-                onChange={(e) =>
-                  setSelectedProduct({ ...selectedProduct, name: e.target.value })
-                }
-                className="w-full p-2 border rounded mb-2"
-              />
-              <textarea
-                name="description"
-                value={selectedProduct.description}
-                onChange={(e) =>
-                  setSelectedProduct({ ...selectedProduct, description: e.target.value })
-                }
-                className="w-full p-2 border rounded mb-2"
-              />
-              <button
-                onClick={() => handleUpdateProduct(selectedProduct)}
-                className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
-              >
-                Guardar
-              </button>
-              <button
-                onClick={handleEditToggle}
-                className="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
-              >
-                Cancelar
-              </button>
-            </>
-          )}
-        </Modal>
+        <Modal  
+          product={selectedProduct} 
+          onUpdate={handleUpdateProduct} 
+          onDelete={handleDeleteProduct} 
+          onClose={() => setSelectedProduct(null)} 
+        />
       )}
 
       <div className="flex justify-center mt-4">
