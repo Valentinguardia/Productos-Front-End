@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from 'next/navigation'; 
 import Modal from "@/commons/Modal";
 import { getProductsData, updateProduct, deleteProduct } from "@/services/productsData"; 
@@ -134,4 +134,11 @@ const Products = () => {
   );
 };
 
-export default Products;
+const ProductsWithSuspense = () => (
+  <Suspense fallback={<div>Cargando...</div>}>
+    <Products />
+  </Suspense>
+);
+
+export default ProductsWithSuspense;
+//export default Products;
