@@ -50,13 +50,13 @@ const Brands = () => {
 
   return (
     <div className="mt-[95px] mb-[30px]">
-      <Navbar brands={brands} />
+      {/* <Navbar brands={brands} /> */}
       <h1 className="text-2xl font-bold mb-[50px] text-center">Marcas</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mx-19 justify-items-center">
         {currentBrands.map((brand) => (
           <div
             key={brand.id}
-            className="cursor-pointer flex flex-col items-center justify-center text-center w-[250px] h-[300px]"
+            className="cursor-pointer flex flex-col items-center justify-center text-center w-[250px] h-[300px] transform transition-transform duration-300 hover:scale-105"
           >
             <img
               src={brand.logo_url}
