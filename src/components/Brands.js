@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import Navbar from "@/commons/Navbar";
 import { getAllBrands, deleteBrand } from "@/services/brandsData"; 
 
 const Brands = () => {
@@ -50,7 +49,6 @@ const Brands = () => {
 
   return (
     <div className="mt-[95px] mb-[30px]">
-      {/* <Navbar brands={brands} /> */}
       <h1 className="text-2xl font-bold mb-[50px] text-center">Marcas</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mx-19 justify-items-center">
         {currentBrands.map((brand) => (

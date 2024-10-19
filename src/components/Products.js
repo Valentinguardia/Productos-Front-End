@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from 'next/navigation'; 
 import Modal from "@/commons/Modal";
-import Navbar from "@/commons/Navbar";
 import { getProductsData, updateProduct, deleteProduct } from "@/services/productsData"; 
 import { getAllBrands } from "@/services/brandsData";
 
@@ -79,7 +78,6 @@ const Products = () => {
 
   return (
     <div className="mt-[95px] mb-[30px]">
-       {/* <Navbar brands={brands} />  */}
       <h1 className="text-2xl font-bold mb-[50px] text-center">Productos</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mx-19 justify-items-center">
         {currentProducts.map((product) => {

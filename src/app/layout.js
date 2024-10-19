@@ -3,11 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { StoreProvider } from "./state/StoreProvider";
 import Footer from "@/commons/Footer";
-//
 import Navbar from "@/commons/Navbar";
 import { getAllBrands } from '@/services/brandsData';
 import { useEffect, useState } from 'react';
-//
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,11 +41,9 @@ useEffect(() => {
     <StoreProvider>
     <html lang="en">
       <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         <Navbar brands={brands}/>
-        {/* {children} */}
         <div className="flex-grow flex items-center justify-center">
             {children}
           </div>
