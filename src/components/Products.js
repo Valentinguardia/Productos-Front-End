@@ -79,7 +79,7 @@ const Products = () => {
 
   return (
     <div className="mt-[95px] mb-[30px]">
-      <Navbar brands={brands} />
+       {/* <Navbar brands={brands} />  */}
       <h1 className="text-2xl font-bold mb-[50px] text-center">Productos</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mx-19 justify-items-center">
         {currentProducts.map((product) => {
@@ -92,7 +92,7 @@ const Products = () => {
           return (
             <div
               key={product.id}
-              className="border p-4 rounded-lg cursor-pointer h-[340px] w-[250px]"
+              className="border p-4 rounded-lg cursor-pointer h-[340px] w-[250px] transform transition-transform duration-300 hover:scale-105"
               onClick={() => setSelectedProduct(product)}
             >
               <img
