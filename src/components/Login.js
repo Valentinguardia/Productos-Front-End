@@ -25,7 +25,7 @@ const Login = () => {
       const response = await loginUser(formData.email, formData.password); 
       router.push("/"); 
     } catch (error) {
-      setError("Error al iniciar sesión. Revisa tus credenciales.");
+      console.error("Error al iniciar sesión. Revisa tus credenciales.");
     }
   };
 
