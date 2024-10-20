@@ -15,6 +15,7 @@ export const registerUser = async (userData) => {
 export const loginUser = async (email, password) => {
   try {
     const response = await axios.post(`${API_URL}/users/login`, {email, password}, {withCredentials: true});
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
